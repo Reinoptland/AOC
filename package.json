@@ -1,0 +1,14 @@
+{
+  "name": "aoc-rein",
+  "version": "1.0.0",
+  "description": "My AOC solutions",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Rein Op 't Land",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
+}
