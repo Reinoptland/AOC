@@ -1,15 +1,24 @@
 const { readFileSync } = require("fs");
 
-const lines = readFileSync("./inputtest.txt", "utf-8").split("\n");
+const lines = readFileSync(`${__dirname}/input.txt`, "utf-8").split("\n");
 
-let sum = 0;
+console.clear();
+// console.log(lines);
 
+const GEAR = "*";
+const numbers = {};
 const gears = {};
 
 for (let i = 0; i < lines.length; i++) {
   const line = lines[i];
+  numbers[i] = {};
+
   for (let j = 0; j < line.length; j++) {
     const character = line[j];
+    if (character === GEAR) {
+      gears[`${i},${j}`] = true;
+    }
+
     if (!isNaN(parseInt(character))) {
       const numberLength = line
         .slice(j)
@@ -19,66 +28,34 @@ for (let i = 0; i < lines.length; i++) {
         .findIndex((char) => isNaN(parseInt(char)));
 
       const number = parseInt(line.slice(j, j + numberLength));
-
-      // previous line
-      let adjacentCharacters = "";
-      const previousLine = lines[i - 1];
-      if (previousLine) {
-        const diagonalUpLeft = previousLine[j - 1];
-        if (diagonalUpLeft) {
-          adjacentCharacters += diagonalUpLeft;
-        }
-
-        const charactersAbove = previousLine.slice(j, j + numberLength);
-        adjacentCharacters += charactersAbove;
-
-        const diagonalUpRight = previousLine[j + numberLength];
-        if (diagonalUpRight) {
-          adjacentCharacters += diagonalUpRight;
-        }
+      for (let k = 0; k < numberLength; k++) {
+        numbers[i][j + k] = number;
       }
-
-      // current line
-      const previousCharacter = line[j - 1];
-      if (previousCharacter) {
-        adjacentCharacters += previousCharacter;
-      }
-
-      const nextCharacter = line[j + numberLength];
-      if (nextCharacter) {
-        adjacentCharacters += nextCharacter;
-      }
-
-      // next line
-      const nextLine = lines[i + 1];
-
-      if (nextLine) {
-        const diagonalDownLeft = nextLine[j - 1];
-        if (diagonalDownLeft) {
-          adjacentCharacters += diagonalDownLeft;
-        }
-
-        const charactersBelow = nextLine.slice(j, j + numberLength);
-        adjacentCharacters += charactersBelow;
-
-        const diagonalDownRight = nextLine[j + numberLength];
-        if (diagonalDownRight) {
-          adjacentCharacters += diagonalDownRight;
-        }
-      }
-
-      const hasAdjacentGear = adjacentCharacters
-        .split("")
-        .some((symbol) => symbol === "*");
-
-      if (hasAdjacentGear) {
-        console.log("GEAR!", number);
-      }
-
-      // now that we've processed this number, skip ahead to the next symbol
       j += numberLength - 1;
     }
   }
 }
 
-console.log("Sum of parts", sum);
+let sum = 0;
+
+for (const gear in gears) {
+  let [x, y] = gear.split(",");
+  x = parseInt(x);
+  y = parseInt(y);
+  const adjacentNumbers = new Set();
+  for (let i = x - 1; i <= x + 1; i++) {
+    for (let j = y - 1; j <= y + 1; j++) {
+      if (numbers[i][j]) {
+        adjacentNumbers.add(numbers[i][j]);
+      }
+    }
+  }
+
+  if (adjacentNumbers.size === 2) {
+    const [number1, number2] = [...adjacentNumbers];
+    const ratio = number1 * number2;
+    sum += ratio;
+  }
+}
+
+console.log("SUM:", sum);
