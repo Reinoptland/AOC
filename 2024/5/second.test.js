@@ -1,6 +1,6 @@
-const { first } = require("./first");
+const { second } = require("./second");
 
-it("Sums the middle pages of all correct updates", () => {
+it("Sums the middle pages of all corrected updates", () => {
   const textFile = `47|53
 97|13
 97|61
@@ -30,6 +30,6 @@ it("Sums the middle pages of all correct updates", () => {
 61,13,29
 97,13,75,29,47`;
 
-  const sum = first(textFile);
-  expect(sum).toBe(143);
+  const sum = second(textFile);
+  expect(sum).toBe(123);
 });

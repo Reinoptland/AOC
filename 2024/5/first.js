@@ -20,42 +20,30 @@ function createLookup(rules) {
   const lookup = {};
   for (const rule of rules) {
     const [pageBefore, pageAfter] = rule.split("|");
-    if (!lookup[pageBefore]) {
-      lookup[pageBefore] = {
-        pagesAfter: { [pageAfter]: true },
-        pagesBefore: {},
-      };
-    } else {
-      lookup[pageBefore].pagesAfter[pageAfter] = true;
-    }
-
-    if (!lookup[pageAfter]) {
-      lookup[pageAfter] = {
-        pagesAfter: {},
-        pagesBefore: { [pageBefore]: true },
-      };
-    } else {
-      lookup[pageAfter].pagesBefore[pageBefore] = true;
-    }
+    lookup[pageBefore] ??= { pagesAfter: {} };
+    lookup[pageBefore].pagesAfter[pageAfter] = true;
   }
+
   return lookup;
 }
 
 function isValidUpdate(update, lookup) {
   let pagesProcessed = [];
-  for (const page of update) {
-    if (!lookup[page]) {
-      pagesProcessed.push(page);
-      continue;
-    } else {
-      for (const processedPage of pagesProcessed) {
-        if (lookup[page].pagesAfter[processedPage]) return false;
-      }
-      pagesProcessed.push(page);
+  for (const currentPage of update) {
+    const pageSpecifiedInRules = lookup[currentPage];
+    const pageIsInInvalidPosition =
+      pageSpecifiedInRules &&
+      pagesProcessed.some(
+        (processedPage) => lookup[currentPage].pagesAfter[processedPage]
+      );
+
+    if (pageIsInInvalidPosition) return false;
+    else {
+      pagesProcessed.push(currentPage);
     }
   }
 
   return true;
 }
 
-module.exports = { first };
+module.exports = { first, parseInput, createLookup, isValidUpdate };
