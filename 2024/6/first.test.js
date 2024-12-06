@@ -1,6 +1,6 @@
 const { first } = require("./first");
 
-it.only("Maps the distinct positions visited by the guard", () => {
+it("Maps the distinct positions visited by the guard", () => {
   const textFile = `....#.....
 .........#
 ..........

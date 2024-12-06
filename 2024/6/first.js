@@ -9,8 +9,7 @@ function first(textFile) {
   const visited = {};
   const grid = textFile.split("\n");
   const [guardRow, guardColumn, direction] = findGuard(grid);
-  console.log(guardRow, guardColumn, direction);
-  visited[`${guardRow},${guardColumn}`] = true;
+  visited[`${guardRow},${guardColumn}`] = { [`${direction}`]: true };
   let nextMove = moveGuard(grid, [guardRow, guardColumn, direction], visited);
   while (nextMove) {
     nextMove = nextMove();
@@ -41,14 +40,22 @@ function moveGuard(grid, guardPosition, visited) {
   [newRow, newColumn] = nextPosition;
   const guardLeftArea =
     grid[newRow] === undefined || grid[newRow][newColumn] === undefined;
+
   if (guardLeftArea) return null;
 
   const nextCell = grid[newRow][newColumn];
+  const isLoop =
+    visited[`${newRow},${newColumn}`] &&
+    visited[`${newRow},${newColumn}`][`${direction}`] === true;
   if (nextCell === OBSTACLE) {
     return () =>
       moveGuard(grid, [guardRow, guardColumn, rotate(direction)], visited);
+  } else if (isLoop) {
+    visited[`${newRow},${newColumn}`].loop = true;
+    return null;
   } else {
-    visited[`${newRow},${newColumn}`] = true;
+    visited[`${newRow},${newColumn}`] ??= {};
+    visited[`${newRow},${newColumn}`][`${direction}`] = true;
     return () => moveGuard(grid, [newRow, newColumn, direction], visited);
   }
 }
@@ -95,4 +102,4 @@ function findGuard(grid) {
   return [row, column, direction];
 }
 
-module.exports = { first };
+module.exports = { first, findGuard, OBSTACLE };
