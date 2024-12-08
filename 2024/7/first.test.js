@@ -1,7 +1,7 @@
-const { first } = require("./first");
+const { first, add, multiply } = require("./first");
 
 describe("First", () => {
-  test("should sum correct calibration values", () => {
+  test("should sum correct calibration values created by add and multiply", () => {
     const textFile = `190: 10 19
 3267: 81 40 27
 83: 17 5
@@ -12,7 +12,7 @@ describe("First", () => {
 21037: 9 7 18 13
 292: 11 6 16 20`;
 
-    const sum = first(textFile);
+    const sum = first(textFile, [add, multiply]);
     expect(sum).toBe(3749);
   });
 });

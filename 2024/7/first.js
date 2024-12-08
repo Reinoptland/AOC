@@ -1,10 +1,22 @@
-function first(textFile) {
+function add(number1, number2) {
+  return number1 + number2;
+}
+
+function multiply(number1, number2) {
+  return number1 * number2;
+}
+
+function concatenate(number1, number2) {
+  return parseInt(`${number1}${number2}`);
+}
+
+function first(textFile, operators) {
   const lines = textFile.split("\n");
   return lines
     .map((line) => {
       let [result, values] = line.split(": ");
       result = parseInt(result);
-      values = values.split(" ");
+      values = values.split(" ").map((n) => parseInt(n));
 
       let permutations = [];
       for (let index = 0; index < values.length; index++) {
@@ -12,10 +24,9 @@ function first(textFile) {
         if (index === 0) {
           permutations.push(currentNumber);
         } else {
-          permutations = permutations.flatMap((calc) => [
-            eval(`${calc}+${currentNumber}`),
-            eval(`${calc}*${currentNumber}`),
-          ]);
+          permutations = permutations.flatMap((number) =>
+            operators.map((operator) => operator(number, currentNumber))
+          );
         }
       }
       return [result, permutations.some((number) => number === result)];
@@ -26,4 +37,4 @@ function first(textFile) {
     }, 0);
 }
 
-module.exports = { first };
+module.exports = { first, add, multiply, concatenate };
