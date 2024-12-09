@@ -1,6 +1,6 @@
 const EMPTY = ".";
 
-function first(textFile) {
+function first(textFile, antinodeMode) {
   const grid = textFile.split("\n");
   const nodes = {};
   for (let row = 0; row < grid.length; row++) {
@@ -21,7 +21,7 @@ function first(textFile) {
     while (matchingAntennaLocations.length > 1) {
       [antennaA, ...matchingAntennaLocations] = matchingAntennaLocations;
       const antinodesWithinBounds = matchingAntennaLocations.flatMap(
-        (antennaB) => findAntinodes(antennaA, antennaB, yBoundry, xBoundry)
+        (antennaB) => antinodeMode(antennaA, antennaB, yBoundry, xBoundry)
       );
       antiNodes.push(...antinodesWithinBounds);
     }

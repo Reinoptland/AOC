@@ -15,7 +15,7 @@ describe("first", () => {
 ............
 ............`;
 
-    const antinodeCount = first(textFile);
+    const antinodeCount = first(textFile, findAntinodes);
     expect(antinodeCount).toBe(14);
   });
 });
