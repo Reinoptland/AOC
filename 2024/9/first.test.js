@@ -19,6 +19,11 @@ describe("checksum", () => {
     const fileLayout = "0099811188827773336446555566..............".split("");
     expect(checksum(fileLayout)).toBe(1928);
   });
+
+  test("calculates a checksum based on a non-compacted fileLayout", () => {
+    const fileLayout = "00992111777.44.333....5555.6666.....8888..".split("");
+    expect(checksum(fileLayout)).toBe(2858);
+  });
 });
 
 describe("readDiskMap", () => {

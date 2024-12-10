@@ -58,7 +58,7 @@ function checksum(fileLayout) {
   for (let index = 0; index < fileLayout.length; index++) {
     const id = fileLayout[index];
     if (id === EMPTY) {
-      break;
+      continue;
     } else {
       sum = sum + index * id;
     }
@@ -72,4 +72,5 @@ module.exports = {
   isFilelayoutCompacted,
   first,
   checksum,
+  EMPTY,
 };
