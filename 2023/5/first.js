@@ -1,5 +1,3 @@
-const { readFileSync } = require("fs");
-
 function first(textFile) {
   const lines = textFile.split("\n\n");
 
