@@ -12,6 +12,7 @@ console.log(
 
 console.time();
 const infinityStones2 = second(textFile);
-console.log("Number of infinity stones after 25 generations", infinityStones2);
+console.log("Number of infinity stones after 75 generations", infinityStones2);
 console.timeEnd();
-// 7 minutes 17 seconds 😓
+// First working solution for part 2    : 7 minutes 17 seconds 😓
+// Current working solution for part 2  : 0.121 seconds 😌

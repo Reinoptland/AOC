@@ -2,23 +2,12 @@ const { transform, first } = require("./first");
 
 function second(textFile) {
   let stones = textFile.split(" ").map((n) => parseInt(n));
-  const generation1 = stones.map((stone) => transformTimes25(stone));
-  const generation2 = generation1.map((series) =>
-    series.map((stone) => transformTimes25(stone))
-  );
-
-  const generation3 = generation2.map((generation, index) => {
-    return generation.map((series) => {
-      return series
-        .map((stone) => transformTimes25(stone).length)
-        .reduce((acc, curr) => acc + curr);
-    });
-  });
-
-  return generation3.reduce(
-    (acc, curr) => acc + curr.reduce((acc2, curr2) => acc2 + curr2, 0),
-    0
-  );
+  for (let index = 0; index < 75; index++) {
+    stones = transformGeneration(stones);
+  }
+  return Object.entries(stones).reduce((acc, [_, count]) => {
+    return acc + count;
+  }, 0);
 }
 
 const memo = {};
@@ -30,4 +19,31 @@ function transformTimes25(number) {
   return stones;
 }
 
-module.exports = { transformTimes25, second };
+function transformGeneration(stones) {
+  if (Array.isArray(stones)) {
+    const stoneMap = {};
+    for (const stone of stones) {
+      stoneMap[stone] ??= 0;
+      stoneMap[stone]++;
+    }
+    stones = stoneMap;
+  }
+
+  const nextGeneration = {};
+  const memoized = {};
+  for (const [stone, count] of Object.entries(stones)) {
+    const transformedStone = transform(stone);
+    if (typeof transformedStone === "number") {
+      nextGeneration[transformedStone] ??= 0;
+      nextGeneration[transformedStone] += count;
+    } else {
+      for (const halvedStone of transformedStone) {
+        nextGeneration[halvedStone] ??= 0;
+        nextGeneration[halvedStone] += count;
+      }
+    }
+  }
+  return nextGeneration;
+}
+
+module.exports = { transformTimes25, second, transformGeneration };

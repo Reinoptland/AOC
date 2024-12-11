@@ -8,7 +8,7 @@ function first(textFile, generations) {
 
 function transform(stone) {
   switch (true) {
-    case stone === 0:
+    case parseInt(stone) === 0:
       return 1;
 
     case stone.toString().length % 2 === 0:
