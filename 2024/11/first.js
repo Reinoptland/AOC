@@ -3,7 +3,7 @@ function first(textFile, generations) {
   for (let index = 0; index < generations; index++) {
     stones = stones.flatMap((stone) => transform(stone));
   }
-  return stones.length;
+  return stones;
 }
 
 function transform(stone) {

@@ -3,13 +3,13 @@ const { first, transform } = require("./first");
 describe("first", () => {
   test("should return the count of stones after transforming the inifinity stones", () => {
     const textFile = "125 17";
-    expect(first(textFile, 1)).toBe(3);
-    expect(first(textFile, 2)).toBe(4);
-    expect(first(textFile, 3)).toBe(5);
-    expect(first(textFile, 4)).toBe(9);
-    expect(first(textFile, 5)).toBe(13);
-    expect(first(textFile, 6)).toBe(22);
-    expect(first(textFile, 25)).toBe(55312);
+    expect(first(textFile, 1).length).toBe(3);
+    expect(first(textFile, 2).length).toBe(4);
+    expect(first(textFile, 3).length).toBe(5);
+    expect(first(textFile, 4).length).toBe(9);
+    expect(first(textFile, 5).length).toBe(13);
+    expect(first(textFile, 6).length).toBe(22);
+    expect(first(textFile, 25).length).toBe(55312);
   });
 });
 
